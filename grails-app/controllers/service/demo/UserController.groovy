@@ -4,6 +4,9 @@ import grails.converters.JSON
 
 class UserController {
 
+    def customBean
+    def prototypeBean
+    TestService testService
     UserService userService
 // wrong way
     def getAllUsers() {
@@ -26,5 +29,17 @@ class UserController {
     // correct way
     def getSortedUsers() {
         render userService.getSortedUserList() as JSON
+    }
+// checking scope ...
+    def customBean() {
+        render(["name": customBean.toString()] as JSON)
+    }
+
+    def prototypeBean(){
+        render(["name": prototypeBean.toString()] as JSON)
+    }
+
+    def testBean() {
+        render(["name": testService.toString()] as JSON)
     }
 }
