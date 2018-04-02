@@ -1,9 +1,10 @@
 package service.demo
 
 import grails.converters.JSON
+import service.demo.co.UserCO
 
 class UserController {
-
+    static allowedMethods = [createUser: 'POST']
     def customBean
     def prototypeBean
     TestService testService
@@ -35,11 +36,20 @@ class UserController {
         render(["name": customBean.toString()] as JSON)
     }
 
-    def prototypeBean(){
+    def prototypeBean() {
         render(["name": prototypeBean.toString()] as JSON)
     }
 
     def testBean() {
         render(["name": testService.toString()] as JSON)
+    }
+
+    //transactions
+
+    def createUser() {
+        UserCO userCO = new UserCO()
+        bindData(userCO, request.getJSON())
+        println "--------${request.getJSON()}--------${params} ::: ${userCO}"
+        render(userService.createUser(userCO) as JSON)
     }
 }
